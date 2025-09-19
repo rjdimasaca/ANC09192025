@@ -1,0 +1,767 @@
+/**
+ * @NApiVersion 2.x
+ * @NScriptType Suitelet
+ * @NModuleScope SameAccount
+ */
+define(['N/record', 'N/file', 'N/render', 'N/config', 'N/email', 'N/search', 'N/runtime', 'N/https', 'N/format'],
+
+function(record, file, render, config, email, search, runtime, https, format) {
+   
+	//make these global for easy access, useful for scoped function reference
+	var transactionSearchObj = null;
+	var transactionSearchObj_columns = [];
+	
+	function formatDateYYYYMMDD(targetDate)
+    {
+    	targetDate = new Date(targetDate);
+    	
+    	var targetDate_date_month = (Number(targetDate.getMonth()) + 1);
+    	var targetDate_date_year = targetDate.getFullYear();
+    	var targetDate_date_date = targetDate.getDate();
+    	
+    	if(targetDate_date_month < 10)
+  	  {
+  		  targetDate_date_month = "0" + targetDate_date_month
+  	  }
+  	  if(targetDate_date_date < 10)
+  	  {
+  		  targetDate_date_date = "0" + targetDate_date_date
+  	  }
+    	
+    	
+    	targetDate =targetDate_date_year + "" + targetDate_date_month + "" + targetDate_date_date;
+    	targetDate = targetDate.split("");
+    	targetDate = targetDate.join("&nbsp;")
+    	return targetDate
+    }
+	
+	function getLineItemsToPrintHtml(lineItemsToPrint)
+	{
+		var lineItemsToPrintHtml = '<table width="100%">';
+		var outOfBalanceItemCount = 0;
+		var totalCostVariance = 0;
+		var snapShotMapping = {};
+		try
+		{
+			for(var a = 0 ; a < lineItemsToPrint.length ; a++)
+			{
+				var lineType = lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[10]) //.columns[5]) BIN
+				var tranLine = "" + lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[11]) //.columns[5]) BIN
+				if(lineType == "SNAPSHOTQUANTITY")
+				{
+					var snapShotQty = lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[6]) //.columns[5]) BIN
+					
+					snapShotMapping[Number(tranLine) - 1] = {snapShotQty : snapShotQty};
+					continue;
+				}
+				
+				lineItemsToPrintHtml += '<tr><td align="left">';
+				lineItemsToPrintHtml += '<table class="contents_item">'
+				lineItemsToPrintHtml += "<tr>";
+				
+				log.debug("snapShotMapping", snapShotMapping)
+				log.debug("tranLine", tranLine)
+				log.debug("snapShotMapping[tranLine]", snapShotMapping[tranLine])
+				//BASIS, make sure this is updated
+
+				/*transactionSearchObj_columns = [
+			//0
+			search.createColumn({name: "item", label: "Item"}),
+		      //1
+		      search.createColumn({
+		         name: "itemid",
+		         join: "item",
+		         label: "Name"
+		      }),
+		      //2
+		      search.createColumn({
+		         name: "displayname",
+		         join: "item",
+		         label: "Display Name"
+		      }),
+		      //3
+		      search.createColumn({name: "memo", label: "Memo"}),
+		      //4
+		      search.createColumn({
+		         name: "stockdescription",
+		         join: "item",
+		         label: "Stock Description"
+		      }),
+		      //5
+		      search.createColumn({
+		          name: "binnumber",
+		          join: "binNumber",
+		          label: "Bin Number"
+		       })
+		       //6
+		      search.createColumn({name: "quantity", label: "Quantity"}),
+		      //7
+		      search.createColumn({name: "unit", label: "Units"}),
+		      //8
+		      search.createColumn({name: "unitabbreviation", label: "Units"}),
+		      //9
+		      search.createColumn({name: "rate", label: "Item Rate"}),
+		      //10
+		      search.createColumn({name: "transactionlinetype", label: "Transaction Line Type"}),
+		      //11
+		      search.createColumn({name: "line", label: "Line ID"}),
+		]
+			*/
+				var tdValues = [];
+				
+				log.debug("lineItemsToPrint[a].columns", lineItemsToPrint[a].columns);
+				
+				//{name: "linesequencenumber", label: "Line Sequence Number"}
+				var lineValue = lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[5]) //.columns[5]) BIN
+				lineValue = clean(lineValue);
+				
+				tdValues.push({lineValue : lineValue, styleClassName : "stockinglocation"});
+				
+				/*{
+			         name: "itemid",
+			         join: "item",
+			         label: "Name"
+			    }*/
+				var lineValue = lineItemsToPrint[a].getText(lineItemsToPrint[a].columns[0]) //.columns[0])
+				lineValue = clean(lineValue);
+				
+				tdValues.push({lineValue : lineValue, styleClassName : "stocknumber"});
+				
+				//TODO should be description on the transasction line level, however MEMO doesnt seem to work
+				var lineValue = lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[4]) //.columns[4]) stock desc from item
+//				var lineValue = "no wrap test1, no wrap test2, no wrap test3, no wrap test4, no wrap test5, no wrap test6," //.columns[4]) stock desc from item
+//				var lineValue = lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[3]) //.columns[3]) description line from transaction
+				lineValue = clean(lineValue);
+				tdValues.push({lineValue : lineValue, styleClassName : "description"});
+				
+				var lineValue = snapShotMapping[tranLine].snapShotQty;
+				var onhandQuantity = lineValue || 0;
+				lineValue = clean(lineValue, true);
+				tdValues.push({lineValue : lineValue, styleClassName : "onhandquantity"});
+				
+				//{name: "quantity", label: "Quantity"}
+				var lineValue = lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[6]) //.columns[6])
+				var itemCount = lineValue || 0;
+				
+				
+				if(snapShotQty != itemCount)
+				{
+					outOfBalanceItemCount++;
+				}
+				
+				
+				lineValue = addCommas(lineValue);
+				tdValues.push({lineValue : lineValue, styleClassName : "itemcount"});
+				
+				var lineValue = itemCount - snapShotMapping[tranLine].snapShotQty;
+				var countVariance = lineValue;
+				lineValue = addCommas(lineValue);
+				tdValues.push({lineValue : lineValue, styleClassName : "countvariance"});
+				
+				var lineValue = lineItemsToPrint[a].getValue(lineItemsToPrint[a].columns[9]) //.columns[6])
+				var itemRate = Number(lineValue) || 0.00;
+				log.debug("itemRate", itemRate);
+				
+				var lineValue = (countVariance * itemRate) || 0.00;
+				var costVariance = lineValue;
+				totalCostVariance += costVariance;
+				lineValue = addCommas(lineValue) + "$";
+				tdValues.push({lineValue : lineValue, styleClassName : "costvariance"});
+				
+				for(var b = 0 ; b < tdValues.length ; b++)
+				{
+					lineItemsToPrintHtml += "<td ";
+					if(tdValues[b].styleClassName)
+					{
+						lineItemsToPrintHtml += "class=" + '"' + tdValues[b].styleClassName + '"';
+					}
+					lineItemsToPrintHtml += ">";
+					lineItemsToPrintHtml += "<p>";
+					lineItemsToPrintHtml += "" + tdValues[b].lineValue ? tdValues[b].lineValue : "";
+
+					lineItemsToPrintHtml += "</p>";
+					lineItemsToPrintHtml += "</td>"
+				}
+				
+				lineItemsToPrintHtml += "</tr>";
+				lineItemsToPrintHtml += "</table>";
+				
+				lineItemsToPrintHtml += "</td>";
+				lineItemsToPrintHtml += "</tr>";
+			}
+			
+			lineItemsToPrintHtml +='<tr>';
+			lineItemsToPrintHtml +='<td colspan="7" align="center">';
+			lineItemsToPrintHtml +='<table font-weight="bold" border="1" align="center">';
+			
+			lineItemsToPrintHtml +='<tr>';
+			lineItemsToPrintHtml +='<td width="100%" padding-right="70px" align="left">';
+			lineItemsToPrintHtml +='Total number of items listed (out-of-balance):';
+			lineItemsToPrintHtml +='</td>';
+			lineItemsToPrintHtml +='<td width="25%" align="right">';
+			lineItemsToPrintHtml += '<p align="right">' + addCommas(outOfBalanceItemCount) + '</p>';
+			lineItemsToPrintHtml +='</td>';
+			lineItemsToPrintHtml +='</tr>';
+//			
+			lineItemsToPrintHtml +='<tr>';
+			lineItemsToPrintHtml +='<td width="100%" padding-right="70px" align="left">';
+			lineItemsToPrintHtml +='Total cost variance:';
+			lineItemsToPrintHtml +='</td>';
+			lineItemsToPrintHtml +='<td width="25%" align="right">';
+			
+			lineItemsToPrintHtml += '<p align="right">' + addCommas(totalCostVariance) + "$" +  '</p>';
+			
+			lineItemsToPrintHtml +='</td>';
+			lineItemsToPrintHtml +='</tr>';
+//
+			lineItemsToPrintHtml +='</table>';
+			
+			lineItemsToPrintHtml +='</td>';
+			lineItemsToPrintHtml +='</tr>';
+			
+			
+			log.debug("snapShotMapping", snapShotMapping);
+			log.debug("lineItemsToPrintHtml", lineItemsToPrintHtml);
+		}
+		catch(e)
+		{
+			log.error("ERROR in function getLineItemsToPrintHtml", e.message);
+			log.error("ERROR in function getLineItemsToPrintHtml", e.stack);
+		}
+
+		
+		lineItemsToPrintHtml += "</table>";
+		
+		return lineItemsToPrintHtml;
+	}
+	
+	function getLineItemsToPrint(context)
+	{
+		var transactionSearchObj_SearchResults = [];
+		
+		transactionSearchObj_columns = [
+			search.createColumn({name: "item", label: "Item"}),
+		      search.createColumn({
+		         name: "itemid",
+		         join: "item",
+		         label: "Name"
+		      }),
+		      search.createColumn({
+		         name: "displayname",
+		         join: "item",
+		         label: "Display Name"
+		      }),
+		      search.createColumn({name: "memo", label: "Memo"}),
+		      search.createColumn({
+		         name: "stockdescription",
+		         join: "item",
+		         label: "Stock Description"
+		      }),
+		      search.createColumn({
+		          name: "binnumber",
+		          join: "binNumber",
+		          label: "Bin Number"
+		       }),
+		      search.createColumn({name: "quantity", label: "Quantity"}),
+		      search.createColumn({name: "unit", label: "Units"}),
+		      search.createColumn({name: "unitabbreviation", label: "Units"}),
+		      //9
+		      search.createColumn({name: "rate", label: "Item Rate"}),
+		      //[10]
+		      search.createColumn({
+		          name: "transactionlinetype",
+		          sort: search.Sort.DESC,
+		          label: "Transaction Line Type"
+		       }),
+		      //11
+		      search.createColumn({
+		          name: "line",
+		          sort: search.Sort.ASC,
+		          label: "Line ID"
+		       }),
+		]
+		
+		log.debug("transactionSearchObj_columns", transactionSearchObj_columns)
+		
+		transactionSearchObj = search.create({
+			   type: "transaction",
+			   filters:
+			   [
+			      ["internalidnumber","equalto",context.request.parameters.recId], 
+			      "AND", 
+			      ["mainline","is","F"], 
+			      "AND", 
+			      ["taxline","is","F"],
+			      "AND", 
+			      ["transactionlinetype","anyof",["COUNTQUANTITY", "SNAPSHOTQUANTITY"]]
+			   ],
+			   columns:
+			   transactionSearchObj_columns
+			});
+		
+		log.debug("transactionSearchObj", transactionSearchObj)
+		
+		
+		transactionSearchObj_SearchResults = getResults(transactionSearchObj.run());
+
+		
+		log.debug("transactionSearchObj_SearchResults", transactionSearchObj_SearchResults)
+		
+		return transactionSearchObj_SearchResults;
+	}
+	
+	function getReplaceKeys(context)
+	{
+		var replaceKeys = {}
+		try
+		{
+			var itemreceiptSearchObj = search.create({
+				   type: "inventorycount",
+				   filters:
+				   [
+				      ["type","anyof","InvCount"], 
+				      "AND", 
+				      ["internalidnumber","is",context.request.parameters.recId],
+				      "AND", 
+				      ["mainline","is",true]
+				   ],
+				   columns:
+				   [
+					   //0
+				      search.createColumn({
+				         name: "tranid",
+				         label: "Document Number"
+				      }),
+				   ]
+				});
+			
+			
+			var searchResults = getResults(itemreceiptSearchObj.run());
+			
+			if(searchResults && searchResults.length > 0 && searchResults[0])
+			{
+				replaceKeys['<custxmlbookref class="replaceKey"></custxmlbookref>'] = clean(searchResults[0].getValue(itemreceiptSearchObj.columns[0]));
+			}
+			var timeStamp = new Date().getTime();
+			var printDate = toMMDDYYYYHHMMSS(timeStamp)
+			
+			replaceKeys['<custxmlprintdate class="replaceKey"></custxmlprintdate>'] = clean(printDate);
+			
+			log.debug("replaceKeys", replaceKeys);
+		}
+		catch(e)
+		{
+			log.error("ERROR in fucntion getReplaceKeys", e.message);
+		}
+		
+		return replaceKeys;
+	}
+	
+	function toMMDDYYYYHHMMSS(timeStamp)
+	{
+//		var formattedDate = format.parse({value:new Date(), type: format.Type.DATETIME});
+		
+		var formattedDate = format.parse({value:new Date(), type: format.Type.DATETIMETZ, timezone:format.Timezone.AMERICA_DENVER})
+		
+		//TODO experimenting with format, cleanup variable usage after
+		timeStamp = formattedDate;
+		log.debug("formattedDate", formattedDate);
+		
+		var toMMDDYYYYHHMMSS_result = timeStamp;
+		try
+		{
+			//MONTH
+			var mm = new Date(timeStamp).getMonth() - 1;
+			if(mm < 10)
+			{
+				mm = "0" + String(mm)
+			}
+			
+			toMMDDYYYYHHMMSS_result = "";
+			
+			toMMDDYYYYHHMMSS_result += mm + "/";
+			//DATE
+			var dd = new Date(timeStamp).getDate();
+			if(dd < 10)
+			{
+				dd = "0" + String(dd)
+			}
+			toMMDDYYYYHHMMSS_result += dd + "/";
+			//YEAR
+			var yyyy = new Date(timeStamp).getFullYear();
+			toMMDDYYYYHHMMSS_result += yyyy
+
+			//SEPARATOR
+			toMMDDYYYYHHMMSS_result += " "; 
+			
+			//HH
+			var hh = new Date(timeStamp).getHours();
+			if(hh < 10)
+			{
+				hh = "0" + String(hh)
+			}
+			toMMDDYYYYHHMMSS_result += hh + ":"
+			
+			//MM
+			var mm = new Date(timeStamp).getMinutes();
+			if(hh < 10)
+			{
+				mm = "0" + String(mm)
+			}
+			toMMDDYYYYHHMMSS_result += mm + ":"
+			
+			//SS
+			var ss = new Date(timeStamp).getSeconds();
+			if(ss < 10)
+			{
+				ss = "0" + String(ss)
+			}
+			toMMDDYYYYHHMMSS_result += ss
+		}
+		catch(e)
+		{
+			log.error("ERROR in function toMMDDYYYYHHMMSS", e.message);
+		}
+		return toMMDDYYYYHHMMSS_result
+	}
+	
+    /**
+     * Definition of the Suitelet script trigger point.
+     *
+     * @param {Object} context
+     * @param {ServerRequest} context.request - Encapsulation of the incoming request
+     * @param {ServerResponse} context.response - Encapsulation of the Suitelet response
+     * @Since 2015.2
+     */
+    function onRequest(context)
+    {
+    	//TODO make this directory driven
+    	var templateFileId = 215829;//SB
+    	var templateFileId = 215829;//PROD
+      	//09132021 - Rodmar
+      	var templateFileId = "./010TMPLT_reconVarianceReport.html";
+//    	var templateFileId = 136493;
+//    	
+//    	var templateFileId = 84207
+//    	var templateFileId = 135261
+    	var finalXmlStr = "";
+    	try
+    	{
+    		if(context.request.method == "GET")
+        	{
+            	if(context.request.parameters.recType && context.request.parameters.recId)
+            	{
+            		var recordObj = record.load({
+            			type : context.request.parameters.recType,
+            			id : context.request.parameters.recId
+            		});
+            		var tranIdValue = recordObj.getValue({
+            			fieldId : "tranid"
+            		})
+            		
+            		var lineItemsToPrint = getLineItemsToPrint(context);
+            		
+            		var lineItemsToPrintHtml = getLineItemsToPrintHtml(lineItemsToPrint);
+            		
+            		log.debug("lineItemsToPrintHtml", lineItemsToPrintHtml);
+            		
+            		/*var itemSublist_count = recordObj.getLineCount({
+            			sublistId : "apply"
+            		});
+            		
+            		var printoutEntries = [];
+            		var totalPaymentAmount = 0;
+            		for(var a = 0 ; a < itemSublist_count ; a++)
+            		{
+            			var poLineNo = recordObj.getSublistValue({
+            				sublistId : "apply",
+            				fieldId : "refnum",
+            				line : a
+            			})
+            			var stockNumber = recordObj.getSublistText({
+            				sublistId : "apply",
+            				fieldId : "applydate",
+            				line : a
+            			})
+            			var description = recordObj.getSublistValue({
+            				sublistId : "apply",
+            				fieldId : "amount",
+            				line : a
+            			})
+            			var stockLocation = recordObj.getSublistValue({
+            				sublistId : "apply",
+            				fieldId : "total",
+            				line : a
+            			})
+            			
+            			var receivedQty = recordObj.getSublistValue({
+            				sublistId : "apply",
+            				fieldId : "total",
+            				line : a
+            			})
+            			
+            			var uomId = recordObj.getSublistValue({
+            				sublistId : "apply",
+            				fieldId : "total",
+            				line : a
+            			})
+            			
+            			var uomText = recordObj.getSublistValue({
+            				sublistId : "apply",
+            				fieldId : "total",
+            				line : a
+            			})
+            			
+            			var itemCost = recordObj.getSublistValue({
+            				sublistId : "apply",
+            				fieldId : "total",
+            				line : a
+            			})
+            			//totalPaymentAmount += Number(refundedTran_total);
+            			totalPaymentAmount += Number(refundedTran_amount);
+            			var printoutEntryObj = {
+            				refundedTran_refnum : refundedTran_refnum,
+            				refundedTran_applydate : refundedTran_applydate,
+            				refundedTran_amount : addCommas(Number(refundedTran_amount).toFixed(2)),
+            				refundedTran_total : addCommas(Number(refundedTran_total).toFixed(2))
+            			}
+            			printoutEntries.push(printoutEntryObj);
+            		}*/
+                    
+            		//TODO make this directory driven
+            		var templateFileObj = file.load({
+            			id : templateFileId
+            		});
+            		
+            		var replaceKeys = getReplaceKeys(context);
+            		
+            		var templateFileContents = templateFileObj.getContents();
+            		
+            		for(var replaceKey in replaceKeys)
+            		{
+            			templateFileContents = templateFileContents.replace(replaceKey, replaceKeys[replaceKey]);
+            		}
+            		
+            		templateFileContents = templateFileContents.replace("{TABLE_ITEM}", lineItemsToPrintHtml)
+//            		templateFileContents = templateFileContents.replace("/{TABLE_ITEM}/g", lineItemsToPrintHtml)
+            		log.debug("templateFileContents", templateFileContents);
+            		var barcodeElement = '<barcode bar-width=".75" codetype="code128" showtext="true" value="' + tranIdValue + '"></barcode>'
+            		
+            		templateFileContents = templateFileContents.replace("{COUNTSHEETBOOKREF}", barcodeElement)
+//            		
+            		
+            		
+            		finalXmlStr += templateFileContents;
+            	}
+        	}
+    	}
+    	catch(e)
+    	{
+    		log.error("ERROR in function onRequest", e.message);
+    	}
+    	log.debug("context", context);
+    	
+//    	<?xml version='1.0'?>
+//    	<!DOCTYPE pdf PUBLIC '-//big.faceless.org//report' 'report-1.1.dtd'>
+//    	<pdf>
+//    		<body>
+//    	        
+//
+//    	    </body>
+//    	</pdf>
+    	
+    	
+//    	var templateFileObj = file.load({
+//			id : templateFileId
+//		})
+//		var templateFileContents = templateFileObj.getContents();
+//		log.debug("templateFileContents", templateFileContents);
+//    	
+//		finalXmlStr = templateFileContents;
+		
+    	/*finalXmlStr = "<?xml version='1.0'?>" +
+    			"<!DOCTYPE pdf PUBLIC '-//big.faceless.org//report' 'report-1.1.dtd'>" +
+    			"<pdf>" +
+    			"<body>" +
+    			"</body>" +
+    			"</pdf>";*/
+    	
+//    	email.send({
+//            author: 99847,
+//            recipients: 99847,
+//            subject: 'customer refund printout logs',
+//            body: finalXmlStr,
+//        })
+    	
+    	var pdf = render.xmlToPdf({
+    		xmlString: finalXmlStr
+	    });
+    	
+    	context.response.writeFile({file: pdf, isInline : true})
+    }
+    
+    function companyRecord() {
+        var company = config.load({
+            type: 'companyinformation'
+        });
+        log.debug("company", company)
+        var ids = ['companyname', 'pagelogo', 'mainaddress_text', 'employerid', 'fax', 'pagelogo', 'phone', 'url', 'email'];
+        var obj = {};
+        for (var i in ids) {
+            obj[ids[i]] = company.getValue(ids[i]) || '';
+        }
+        // Fields inside address subrecord
+        var addressRecord = company.getSubrecord('mainaddress');
+
+        ids = ['country', 'addrphone', 'addrtext', 'addr1'];
+        for (var i in ids) {
+            obj[ids[i]] = addressRecord.getValue(ids[i]) || '';
+        }
+        return obj;
+    }
+    
+    var th = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
+    var dg = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    var tn = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    var tw = ['Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+    function toWords(s) {
+        s = s.toString();
+        s = s.replace(/[\, ]/g, '');
+        if (s != parseFloat(s)) return 'not a number';
+        var x = s.indexOf('.');
+        if (x == -1) x = s.length;
+        if (x > 15) return 'too big';
+        var n = s.split('');
+        var str = '';
+        var sk = 0;
+        for (var i = 0; i < x; i++) {
+            if ((x - i) % 3 == 2) {
+                if (n[i] == '1') {
+                    str += tn[Number(n[i + 1])] + ' ';
+                    i++;
+                    sk = 1;
+                } else if (n[i] != 0) {
+                    str += tw[n[i] - 2] + ' ';
+                    sk = 1;
+                }
+            } else if (n[i] != 0) {
+                str += dg[n[i]] + ' ';
+                if ((x - i) % 3 == 0) str += 'Hundred ';
+                sk = 1;
+            }
+            if ((x - i) % 3 == 1) {
+                if (sk) str += th[(x - i - 1) / 3] + ' ';
+                sk = 0;
+            }
+        }
+        if (x != s.length) {
+            var y = s.length;
+            o = s.substring(x + 1);
+            u = parseFloat(o);
+            if (o > 0) {
+                str += 'and ';
+                str += o + "/100";
+            }
+
+        }
+        str += " Only";
+        return str.replace(/\s+/g, ' ');
+    }
+    
+    function getDatacenterUrls() {
+        var headers = [];
+        headers['Content-Type'] = 'text/xml';
+        headers['SOAPAction'] = 'getDataCenterUrls';
+        var urls = {
+            'webservicesDomain': '',
+            'systemDomain': '',
+            'restDomain': ''
+        }
+
+        var xml = "<soapenv:Envelope xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' > <soapenv:Header> </soapenv:Header> <soapenv:Body> <getDataCenterUrls xsi:type='platformMsgs:GetDataCenterUrlsRequest'> <account xsi:type='xsd:string'>" + runtime.accountId + "</account> </getDataCenterUrls> </soapenv:Body> </soapenv:Envelope>";
+        /* The variable above was properly escaped and has no line breaks, apparently using the nlapiEscapeXML() does not resolve this because this is declared as a String not an XML type */
+
+        var sUrl = "https://webservices.netsuite.com/services/NetSuitePort_2014_2"
+            /* use the latest webservice URL to call the getDataCenterURLs command. */
+
+        resp = https.post({
+        	url : sUrl, body : xml, header: headers
+        }); // creates and calls the web service request
+
+        log.debug("getDatacenterUrls resp", resp);
+        var res = resp.body; // gets the body of the request into XML form
+
+        log.debug("getDatacenterUrls res", res);
+        Object.keys(urls).forEach(function(url, index, a) {
+            var b = new RegExp('<platformCore:' + url + '>(.*?)<\/platformCore:' + url + '>', 'g')
+            if (b.test(res))
+                res.match(b).map(function(val) {
+                    urls[url] = val.replace(new RegExp('<\/?platformCore:' + url + '>', 'g'), '')
+                })
+        })
+        
+        log.debug("getDatacenterUrls urls", urls);
+        return urls;
+    }
+    
+    var getResults = function getResults(set) {
+        var holder = [];
+        var i = 0;
+        while (true) {
+            var result = set.getRange({
+                start: i,
+                end: i + 1000
+            });
+            if (!result) break;
+            holder = holder.concat(result);
+            if (result.length < 1000) break;
+            i += 1000;
+        }
+        return holder;
+    };
+    
+    function clean(value, comma)
+	{
+    	try
+    	{
+    		if(value)
+    		{
+    			value = value.replace(/&/g, "&amp;");
+    			value = value.replace(/\n/g, "<br/>");
+    			if(comma)
+    			{
+    				value = addCommas(value);
+    			}
+    		}
+    	}
+    	catch(e)
+    	{
+    		log.error("ERROR in function clean", e.message);
+    	}
+		
+		return value;
+	}
+    
+    function addCommas(number) {
+        if (number) {
+          if (Math.floor(number) === number) {
+            number += '.00';
+          } else {
+            number = parseFloat(number).toFixed(2);
+          }
+          parts = number.toString().split('.');
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          number = parts.join('.');
+          return number;
+        } else {
+          return '0.00';
+        }
+      }
+    
+
+    return {
+        onRequest: onRequest
+    };
+    
+});

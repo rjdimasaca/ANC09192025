@@ -1,0 +1,61 @@
+/**
+ * @NApiVersion 2.x
+ * @NScriptType ScheduledScript
+ */
+define(['N/search', 'N/log'], function (search, log) {
+
+    function execute(context) {
+        var poLineSearch = search.create({
+            type: search.Type.PURCHASE_ORDER,
+            filters: [
+                ['mainline', 'is', 'F'],
+                'AND',
+                ['custcol_syncmspo_line', 'greaterthan', 0],
+                'AND',
+                ['custcol_syncmspo_line', 'lessthan', 10]
+            ],
+            columns: [
+                'tranid',
+                'line',
+                'item',
+                'custcol_syncmspo_line',
+                'quantity',
+                'rate',
+                'amount',
+                'description'
+            ]
+        });
+
+        var count = 0;
+        poLineSearch.run().each(function (result) {
+            var poNum = result.getValue('tranid');
+            var line = result.getValue('line');
+            var item = result.getText('item');
+            var syncLine = result.getValue('custcol_syncmspo_line');
+            var qty = result.getValue('quantity');
+            var rate = result.getValue('rate');
+            var amount = result.getValue('amount');
+            var desc = result.getValue('description');
+
+            log.audit('Duplicate Line Found', 
+                'PO: ' + poNum +
+                ', Line: ' + line +
+                ', SYNCMSPO Line #: ' + syncLine +
+                ', Item: ' + item +
+                ', Qty: ' + qty +
+                ', Rate: ' + rate +
+                ', Amount: ' + amount +
+                ', Desc: ' + desc
+            );
+
+            count++;
+            return true;
+        });
+
+        log.audit('Script Completed', 'Total matching lines found: ' + count);
+    }
+
+    return {
+        execute: execute
+    };
+});

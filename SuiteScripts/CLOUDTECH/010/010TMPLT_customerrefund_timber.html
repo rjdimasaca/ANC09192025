@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+	<head>
+	
+		<link name="micre13b" type="font" subtype="opentype"
+      	src="https://1116623.app.netsuite.com/c.1116623/suitebundle43003/lib/Font/micre13b.ttf" bytes="2" />
+	
+		<style type="text/css">
+      .check table,
+      .voucher1 table,
+      .voucher2 table {
+        position: relative;
+        overflow: hidden;
+        font-size: 9pt;
+        font-family: Helvetica, sans-serif;
+        padding: 0;
+      }
+
+      table.itemtable,
+      table.check {
+        position: relative;
+        font-size: 9pt;
+        font-family: Helvetica, sans-serif;
+        padding: 0;
+      }
+
+      table.currency {
+        position: relative;
+        font-size: 8pt;
+        font-family: Helvetica, sans-serif;
+        padding: 0;
+      }
+
+      table.itemtable {
+        table-layout: fixed;
+      }
+      
+      .lineContents{
+		align:center,
+		width: 25%,
+		text-align: justify,
+	  }
+	  
+	  
+	  .check table,
+      .voucher1 table,
+      .voucher2 table {
+        position: relative;
+        overflow: hidden;
+        font-size: 9pt;
+        font-family: Helvetica, sans-serif;
+        padding: 0;
+      }
+
+      table.itemtable,
+      table.check {
+        position: relative;
+        font-size: 9pt;
+        font-family: Helvetica, sans-serif;
+        padding: 0;
+      }
+
+      table.currency {
+        position: relative;
+        font-size: 8pt;
+        font-family: Helvetica, sans-serif;
+        padding: 0;
+      }
+
+      table.itemtable {
+        table-layout: fixed;
+      }
+      
+      
+    </style>	
+		<macrolist>
+			<macro id="nlheader">
+        <table>
+          <tr style="margin-top: 30px;">
+            <td><img height="50px" width="110px" src="https://ecotoxcan.ca/media/LOGO-Alberta-Newsprint-Company-Colour.bmp" /></td>
+            <td style="width: 100px;font-family: Helvetica, sans-serif; font-size: 7pt;">
+              <strong>ANC Timber Ltd.<br />
+              PO Bag 9000<br />
+				Whitecourt AB T7S 1P9<br />
+				Canada<br /></strong></td>
+            <!-- <td style="margin-left: -8px; font-family: Helvetica, sans-serif; font-size: 9pt;"><strong>$SUBSIDIARY//TODO<br />$ADDRESS//TODO</strong></td> -->
+            <td style="width: 100px;font-family: Helvetica, sans-serif; font-size: 7pt;"><p align="right">CHEQUE DATE: <br />CUSTOMER No:
+              <br />CUSTOMER: </p></td>
+            <td style="width: 100px; font-family: Helvetica, sans-serif; font-size: 7pt;"><p align="left">{checkDate}
+              <br />{vendorNo}<br />
+              {vendorText}
+              </p>
+            </td>
+            <td style="width: 90px; font-family: Helvetica,sans-serif; font-size: 7pt;"><p align="right"> &nbsp;</p></td>
+            <td style="width: 90px; font-family: Helvetica,sans-serif; font-size: 7pt;"><p align="right">CHEQUE NUMBER: <br/>{checkNo}</p></td>
+          </tr>
+        </table>
+      </macro>
+			
+			<!-- NOT IN THE PATTERN
+			<macro id="nlfooter">
+        <table class="footer">
+          <tr>
+            <td align="left"
+              style="font-family: Helvetica, sans-serif; font-size: 9pt;font-family: Helvetica, sans-serif; font-size: 9pt;font-size: 8pt; margin-bottom: 5px;">
+              E-mail: ${subsidiary.custrecord_apcontact}</td>
+          </tr>
+        </table>
+        <table class="footer" style="font-family: Helvetica, sans-serif; font-size: 9pt;width: 100%; margin-top: 5px;">
+          <tr>
+            <td align="right">
+              <pagenumber /> of
+              <totalpages />
+            </td>
+          </tr>
+        </table>
+      </macro>
+			-->
+		</macrolist>
+	</head>
+
+	<body padding="0.5in 0.5in 0.5in 0.5in">
+	<!--<body header="nlheader" header-height="10%" footer="nlfooter" footer-height="10pt"
+            padding="0.5in 0.5in 0.5in 0.5in">-->
+	 
+	 <div
+        style="position: relative;font-family: Helvetica,sans-serif;height: 514pt;width: 540pt;page-break-before: avoid;page-break-after: avoid;font-size: 8pt;">
+	 
+	 
+	 	{configCompanyName}
+        <table
+          style="position: absolute;overflow: hidden;left: 0pt; top: 15pt; height: 18pt;width: 200pt;font-size: 7pt;">
+          <tr>
+            <td><img height="40px" width="100px" src="{configCompanyLogo}" /></td>
+            <td style="margin-left: 10px;"><strong>{configCompanyName}<br />{configCompanyAddress}</strong></td>
+          </tr>
+        </table>
+
+        <table style="position: absolute;overflow: hidden;left: 240pt;top: 15pt;height: 13pt;width: 65pt;">
+          <tr>
+            <td>CHEQUE DATE:<br />VENDOR No:<br />VENDOR:</td>
+          </tr>
+        </table>
+
+        <table style="position: absolute;overflow: hidden;left: 305pt;top: 15pt;height: 13pt;width: 105pt;">
+          <tr>
+            <td>{checkDate}<br />{vendorNo}<br />
+              {vendorText}
+            </td>
+          </tr>
+        </table>
+
+        <table style="position: absolute;overflow: hidden;left: 420pt;top: 15pt;height: 13pt;width: 130pt;">
+          <tr>
+            <td align="center">CHEQUE NUMBER:<br />{checkNo}</td>
+          </tr>
+        </table>
+	 
+	 	<table
+          style="position: absolute;overflow: hidden;left: 0pt;top: 60pt;width: 100%;height: 400;border: 1px solid #000;">
+	 
+		<!--<table class="itemtable" style="width: 100%; margin-top: 60px; border: 1px solid #000;">-->
+          <thead>
+            <tr style="height:12pt;border-bottom: 1px solid #000;">
+              <th align="center" style="width: 25%; text-align: justify"><strong>INVOICE DATE</strong></th>
+              <th align="center" style="width: 25%; text-align: justify"><strong>VENDOR INVOICE NO</strong></th>
+              <th align="right" style="width: 25%; text-align: justify"><strong>INVOICE AMOUNT</strong></th>
+              <!-- No such thing as discount amount in credit memo <th align="right" style="width: 25%; text-align: justify"><strong>DISCOUNT AMOUNT </strong></th>  -->
+              <th align="right" style="width: 25%; text-align: justify"><strong>NET AMOUNT </strong></th>
+              <!-- <th style="width:2%">&nbsp;</th>  -->
+            </tr>
+          </thead>
+          {lineContents}
+          <!-- custpage_rows TODO  -->
+          <!-- custpage_rows2 TODO -->
+          <!--
+          <tr>
+            <td colspan="3"></td>
+			<td colspan="1">
+				<p align="center">TOTAL:</p>
+				<p align="center">{currencySymbol}{totalAmount}</p>
+			</td>
+          </tr>
+          -->
+        </table>
+		
+		<table style="position: absolute;left: 0pt;top: 460pt;height: 15pt;width: 540pt;border: 1px solid #000;">
+		<!---<table class="check" style="left: 0pt;height: 15pt;width: 100%;border: 1px solid #000;">-->
+          <tr>
+            <td style="width:56%;">&nbsp;</td>
+            <!--<td align="right" style="width: 30%;">US Dollars</td>-->
+            <td align="right" style="width: 30%;">  </td>
+            <td style="width:14%;">TOTAL: <br /> {currencySymbol}{totalAmount} </td>
+          </tr>
+        </table>
+
+        <table style="position: absolute; overflow: hidden; left: 0pt; top: 490pt;height: 15pt;width: 540pt;">
+          <tr>
+            <td style="width:5%">&nbsp;</td>
+            <td style="width:25%">REMITTANCE STATEMENT</td>
+            <td style="width:40%">&nbsp;</td>
+            <td style="width:30%">DETACH BEFORE DEPOSITING</td>
+            <td style="width:5%">&nbsp;</td>
+          </tr>
+        </table>
+        <!-- End of Voucher -->
+        </div>
+        
+        <div
+        style="position; relative;overflow: hidden; font-family: Helvetica,sans-serif;height: 300pt; width: 540pt;font-size: 8pt; top: 5pt;">
+        <table
+          style="position: absolute;overflow: hidden;left: 0pt; top: 0pt; height: 18pt;width: 200pt;font-size: 7pt;">
+          <tr>
+            <td><img height="40px" width="100px" src="{configCompanyLogo}" /></td>
+            <td><strong>
+				ANC Timber Ltd. <br/> 
+				PO Bag 9000<br />
+				Whitecourt AB T7S 1P9<br />
+				Canada<br />
+			</strong></td>
+          </tr>
+        </table>
+
+        <table
+          style="position: absolute;overflow: hidden;left: 265pt; top: 0pt; height: 18pt;width: 108pt;font-size: 7pt;">
+          <tr>
+            <td><strong>Royal Bank of Canada<br />1025 West Georgia Street<br />Vancouver, BC V6E 3N9</strong></td>
+          </tr>
+        </table>
+
+        <table
+          style="font-family: Helvetica, sans-serif; font-size: 10.6667px; position: absolute; overflow: hidden; left: 390pt; top: 0pt; height: 13pt; width: 150pt;align: right;">
+          <tr>
+            <td style="align: right">CHEQUE NUMBER<br />{checkNo}</td>
+          </tr>
+        </table>
+
+        <table style="position: absolute;overflow: hidden;left: 480pt;top: 30pt;height: 18pt;width: 60pt;">
+          <tr>
+            <td align="right">{checkDateYYYYMMDD}<br /><span style="font-size:7pt">Y Y Y Y M M D D</span></td>
+          </tr>
+        </table>
+
+        <table
+          style="position: absolute;overflow: hidden;white-space: nowrap;left: 0pt;top: 55pt;height: 14pt;width: 420pt;">
+          <tr>
+            <td style="width: 70%;"><strong>PAY EXACTLY {totalAmountInWordsCaps}
+              </strong></td>
+          </tr>
+        </table>
+
+
+        <table style="position: absolute;overflow: hidden;left: 425pt;top: 60pt;height: 14pt;width: 115pt;">
+          <tr>
+            <td align="right">*****{currencySymbol}{totalAmount}
+            </td>
+            <td style="width:50pt;">&nbsp;</td>
+          </tr>
+        </table>
+
+        <table
+              style="position: absolute;overflow: hidden;left: 425pt;top: 77pt;height: 6pt;width: 55pt;font-size: 6pt;">
+              <tr>
+                <td align="right">{currencyFundsText}</td>
+              </tr>
+            </table>
+
+        <table
+          style="position: absolute;overflow: hidden;left: 0pt;top: 115pt;height: 55pt;width: 40pt;font-size: 6pt;">
+          <tr>
+            <td>PAY<br />TO THE<br />ORDER OF</td>
+          </tr>
+        </table>
+
+        <table style="position: absolute;overflow: hidden;left: 40pt;top: 110pt;height: 18pt;width: 200pt;">
+          <tr>
+            <td>
+              {payToTheOrderOfText}
+            </td>
+          </tr>
+        </table>
+
+        <table style="position: absolute;overflow: hidden;left: 40pt;top: 130pt;height: 40pt;width: 200pt;">
+          <tr>
+            <td>{payToAddressText}</td>
+          </tr>
+        </table>
+
+        <table style="position: absolute;left: 310pt;top: 110pt;height: 60pt;width: 230pt;">
+          <tr>
+            <td align="right" style="font-size: 7pt;" width="15%">PER</td>
+            <td style="border-bottom: 1px solid #000;" width="90%">&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td style="font-size: 7pt;">Authorized Signature</td>
+          </tr>
+          <tr>
+            <td style="height: 8pt;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="right" style="font-size: 7pt;">PER</td>
+            <td style="border-bottom: 1px solid #000;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td style="font-size: 7pt;">Authorized Signature</td>
+          </tr>
+        </table>
+
+        <table
+          style="position: absolute; overflow: hidden; left: 50pt; top: 195pt; height: 18pt; width: 500pt; font-family: micre13b; font-size: 23px;">
+          <tr>
+            <!-- <td>C0000123456C A99999D999A . 999D999D9C</td> -->
+            <!-- Unable to calculate padding values dynamically at runtime, cheque numbere not known when script executes on cheque or vendor bill records. 10 statements below are require to work around these issues -->
+            <td>
+            C{leadingZeroesBasedOnTranId}C
+            A{custbody_pdfroutenumber}D{custbody_pdfbanknumber}A {custbody_pdfaccountnumber}</td>
+            <!--${record.custbody_pdfroutenumber}${record.custbody_pdfbanknumber}${record.custbody_pdfaccountnumber}</td>-->
+            <!--A${record.custbody_pdfroutenumber}D${record.custbody_pdfbanknumber}A ${record.custbody_pdfaccountnumber}</td>-->
+            <!--A${record.custbody_pdfroutenumber}D${record.custbody_pdfbanknumber}A ${record.custbody_pdfaccountnumber}</td>-->
+          </tr>
+        </table>
+      </div>
+
+	</body>
+</pdf>

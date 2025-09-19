@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Planner Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .calendar-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 40px;
+        }
+        .sidebar {
+            width: 250px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-right: 20px;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .calendar {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+        .header select, .header button {
+            font-size: 16px;
+            padding: 6px 12px;
+        }
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-top: 1px solid #ddd;
+        }
+        /* General day styles */
+        .days div {
+            border: 1px solid #e0e0e0;
+            padding: 8px;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Month view styles */
+        .month-view .days div {
+            height: 100px; /* Fixed height for month view */
+            overflow: hidden;
+        }
+
+        .month-view .days div.header-day {
+            background-color: #f7f7f7;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px 0;
+            border-top: none;
+            cursor: default;
+        }
+        .week-view .days div.header-day {
+             background-color: #f7f7f7;
+             font-weight: bold;
+             text-align: center;
+             padding: 12px 0;
+             border-top: none;
+             cursor: default;
+         }
+
+        /* Week view styles */
+        .week-view .days div {
+            height: 200px; /* Increased height for week view */
+            overflow: hidden;
+        }
+
+        /* Day view styles */
+        .day-view .days div {
+            height: 400px; /* Increased height for day view */
+            overflow: auto; /* Allow scrolling if needed */
+        }
+
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+        }
+
+
+        .day-number {
+            font-weight: bold;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+        }
+        .note-icon {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            font-size: 16px;
+            color: #888;
+        }
+        .empty {
+            background-color: #fff;
+            border: 1px solid transparent;
+            cursor: default;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+        }
+        .modal textarea {
+            width: 100%;
+            height: 120px;
+            resize: none;
+            font-size: 14px;
+        }
+        .modal button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calendar-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Controls</h3>
+        <div>
+            <label for="viewModeSelect">View Mode:</label>
+            <select id="viewModeSelect" onchange="updateCalendarView()">
+                <option value="month">Month View</option>
+                <option value="week">Week View</option>
+                <option value="day">Day View</option>
+            </select>
+        </div>
+        <br />
+        <div>
+            <button type="button" onclick="resetCalendar()">rodmar button</button>
+        </div>
+        <br />
+        <div>
+            <button type="button" onclick="goToToday()">Today</button>
+        </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar">
+        <div class="header">
+            <button type="button" onclick="changeMonth(-1)">&#8592; Prev</button>
+            <div>
+                <select id="monthSelect" onchange="updateCalendar()"></select>
+                <select id="yearSelect" onchange="updateCalendar()"></select>
+            </div>
+            <button type="button" onclick="changeMonth(1)">Next &#8594;</button>
+        </div>
+        <div class="days" id="calendarDays">
+            <!-- Calendar content -->
+        </div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="infoModal">
+    <div class="modal-content">
+        <h3 id="modalDateLabel">Date Info</h3>
+        <p id="modalInfoText">Loading...</p>
+        <button type="button" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+    const monthSelect = document.getElementById('monthSelect');
+    const yearSelect = document.getElementById('yearSelect');
+    const calendarDays = document.getElementById('calendarDays');
+    const modal = document.getElementById('infoModal');
+    const modalDateLabel = document.getElementById('modalDateLabel');
+    const modalInfoText = document.getElementById('modalInfoText');
+    const viewModeSelect = document.getElementById('viewModeSelect');
+
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+    let currentView = 'month'; // 'month', 'week', 'day'
+    let currentWeekStartDate = new Date();
+
+    function populateSelectors() {
+        monthNames.forEach((month, index) => {
+            const option = document.createElement("option");
+            option.value = index;
+            option.text = month;
+            if (index === currentMonth) option.selected = true;
+            monthSelect.appendChild(option);
+        });
+
+        for (let year = 1900; year <= 2100; year++) {
+            const option = document.createElement("option");
+            option.value = year;
+            option.text = year;
+            if (year === currentYear) option.selected = true;
+            yearSelect.appendChild(option);
+        }
+    }
+
+    function updateCalendar() {
+        const calendarElement = document.querySelector('.calendar');
+
+        // Remove all view-specific classes
+        calendarElement.classList.remove('month-view', 'week-view', 'day-view');
+
+        if (currentView === 'month') {
+            calendarElement.classList.add('month-view');
+            renderMonthView();
+        } else if (currentView === 'week') {
+            calendarElement.classList.add('week-view');
+            renderWeekView();
+        } else if (currentView === 'day') {
+            calendarElement.classList.add('day-view');
+            alert("Day view functionality not yet implemented.");
+        }
+    }
+
+
+    function renderMonthView() {
+        const selectedMonth = parseInt(monthSelect.value);
+        const selectedYear = parseInt(yearSelect.value);
+        const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
+        const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+
+        calendarDays.innerHTML = '';
+
+        // Header days
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        dayNames.forEach(day => {
+            const div = document.createElement("div");
+            div.innerText = day;
+            div.classList.add("header-day");
+            calendarDays.appendChild(div);
+        });
+
+        // Empty cells (previous month days)
+        const previousMonthDays = new Date(selectedYear, selectedMonth, 0).getDate();
+        for (let i = firstDay - 1; i >= 0; i--) {
+            const empty = document.createElement("div");
+            empty.classList.add("empty");
+            empty.innerText = previousMonthDays - i;
+            calendarDays.appendChild(empty);
+        }
+
+        // Calendar days
+        for (let i = 1; i <= daysInMonth; i++) {
+            const day = document.createElement("div");
+            const dateKey = `${selectedYear}-${selectedMonth + 1}-${i}`;
+            const number = document.createElement("div");
+            number.classList.add("day-number");
+            number.innerText = i;
+            day.appendChild(number);
+
+            if (localStorage.getItem(dateKey)) {
+                const noteIcon = document.createElement("div");
+                noteIcon.classList.add("note-icon");
+                noteIcon.innerText = "📝";
+                day.appendChild(noteIcon);
+            }
+
+            day.onclick = () => openModal(dateKey, selectedYear, selectedMonth + 1, i);
+            calendarDays.appendChild(day);
+        }
+    }
+
+    function renderWeekView() {
+        const selectedYear = parseInt(yearSelect.value);
+        const selectedMonth = parseInt(monthSelect.value);
+
+        const firstDayOfWeek = new Date(selectedYear, selectedMonth, currentWeekStartDate.getDate() - currentWeekStartDate.getDay());
+        const lastDayOfWeek = new Date(firstDayOfWeek);
+        lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+
+        calendarDays.innerHTML = '';
+
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        dayNames.forEach(day => {
+            const div = document.createElement("div");
+            div.innerText = day;
+            div.classList.add("header-day");
+            calendarDays.appendChild(div);
+        });
+
+        for (let i = 0; i < 7; i++) {
+            const currentDay = new Date(firstDayOfWeek);
+            currentDay.setDate(firstDayOfWeek.getDate() + i);
+
+            const dayDiv = document.createElement("div");
+            const dateKey = `${currentDay.getFullYear()}-${currentDay.getMonth() + 1}-${currentDay.getDate()}`;
+            const dayNumber = document.createElement("div");
+            dayNumber.classList.add("day-number");
+            dayNumber.innerText = currentDay.getDate();
+            dayDiv.appendChild(dayNumber);
+
+            if (localStorage.getItem(dateKey)) {
+                const noteIcon = document.createElement("div");
+                noteIcon.classList.add("note-icon");
+                noteIcon.innerText = "📝";
+                dayDiv.appendChild(noteIcon);
+            }
+
+            dayDiv.onclick = () => openModal(dateKey, currentDay.getFullYear(), currentDay.getMonth() + 1, currentDay.getDate());
+            calendarDays.appendChild(dayDiv);
+        }
+    }
+
+    function changeMonth(direction) {
+        currentMonth += direction;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        monthSelect.value = currentMonth;
+        yearSelect.value = currentYear;
+        updateCalendar();
+    }
+
+    function changeWeek(direction) {
+        currentWeekStartDate.setDate(currentWeekStartDate.getDate() + direction * 7);
+        updateCalendar();
+    }
+
+    function openModal(key, year, month, day) {
+        const dateLabel = `${monthNames[month - 1]} ${day}, ${year}`;
+        modalDateLabel.innerText = `Information for ${dateLabel}`;
+
+        modalInfoText.innerText = `Here you could show events, tasks, or allocations for this date.`;
+
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    function updateCalendarView() {
+        currentView = viewModeSelect.value;
+        updateCalendar();
+    }
+
+    function resetCalendar() {
+        currentMonth = new Date().getMonth();
+        currentYear = new Date().getFullYear();
+        currentView = 'month';
+        updateCalendar();
+    }
+
+    function goToToday() {
+        const today = new Date();
+        currentMonth = today.getMonth();
+        currentYear = today.getFullYear();
+        currentWeekStartDate = today;
+        updateCalendar();
+    }
+
+    // Initialize
+    populateSelectors();
+    updateCalendar();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+{
+  "type": "object",
+  "properties": {
+    "BuyerPO#": {
+      "type": "integer"
+    },
+    "itemLines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "quantity": {
+                  "type": "number"
+                },
+                "quantityUom": {
+                  "type": "string",
+                  "enum": [
+                    "lbs",
+                    "MT",
+                    "kg"
+                  ]
+                },
+                "description": {
+                  "type": "string"
+                },
+                "basisWeight": {
+                  "type": "number"
+                },
+                "basisWeightUom": {
+                  "type": "string"
+                },
+                "rollDiameter": {
+                  "type": "number"
+                },
+                "rollDiameterUom": {
+                  "type": "string",
+                  "enum": [
+                    "in",
+                    "mm",
+                    "cm"
+                  ]
+                },
+                "rollWidth": {
+                  "type": "number"
+                },
+                "rollWidthUom": {
+                  "type": "string",
+                  "enum": [
+                    "in",
+                    "mm",
+                    "cm"
+                  ]
+                },
+                "price": {
+                  "type": "number"
+                },
+                "priceUom": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "quantity",
+                "quantityUom",
+                "description",
+                "basisWeight",
+                "basisWeightUom",
+                "rollDiameter",
+                "rollDiameterUom",
+                "rollWidth",
+                "rollWidthUom"
+              ]
+            }
+          }
+        },
+        "required": [
+          "item"
+        ]
+      }
+    },
+    "BuyerCompany": {
+      "type": "string"
+    },
+    "Buyer/Authorizer": {
+      "type": "string"
+    },
+    "Ref#": {
+      "type": "integer"
+    },
+    "ShipTo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "AddressLines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "AddressLine": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "ShipToCountry": {
+            "type": "string"
+          },
+          "ShipToState": {
+            "type": "string"
+          },
+          "ShipToCity": {
+            "type": "string"
+          },
+          "ShipToProvince": {
+            "type": "string"
+          },
+          "ShipToPostalCode": {
+            "type": "string"
+          },
+          "ShipToZipCode": {
+            "type": "string"
+          },
+          "ShipToName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ShipToCountry",
+          "ShipToCity",
+          "ShipToName"
+        ]
+      }
+    }
+  },
+  "required": [
+    "BuyerPO#",
+    "itemLines",
+    "BuyerCompany",
+    "ShipTo"
+  ]
+}

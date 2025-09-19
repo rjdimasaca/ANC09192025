@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+<Author>NetSuite</Author>
+<LastAuthor>NetSuite</LastAuthor>
+<Company>NetSuite</Company>
+</DocumentProperties>
+<Styles>
+<Style ss:ID="company">
+<Alignment ss:Horizontal="Center"/>
+<Font ss:Bold="1"/>
+</Style> <Style ss:ID="error">
+<Alignment ss:Horizontal="Center"/>
+<Interior ss:Color="#d04040" ss:Pattern="Solid"/>
+<Font ss:Bold="1"/>
+</Style> <Style ss:ID="header">
+<Alignment ss:Horizontal="Center"/>
+<Font ss:Size="7" ss:Bold="1"/>
+<Interior ss:Color="#d0d0d0" ss:Pattern="Solid"/>
+</Style> <Style ss:ID="Default" ss:Name="Normal">
+<Alignment ss:Vertical="Bottom"/>
+<Borders/>
+<Font ss:FontName="Arial" ss:Size="8"/>
+<Interior/>
+<NumberFormat/>
+<Protection/>
+</Style>
+<Style ss:ID="s__TIMEOFDAY"><NumberFormat ss:Format="Medium Time"/></Style>
+<Style ss:ID="s__DATETIME"><NumberFormat ss:Format="General Date"/></Style>
+<Style ss:ID="s__DATETIMETZ"><NumberFormat ss:Format="General Date"/></Style>
+<Style ss:ID="s__DATE"><NumberFormat ss:Format="Short Date"/>
+</Style><Style ss:ID="s__text"></Style><Style ss:ID="s__currency"><NumberFormat ss:Format="Currency"/></Style>
+<Style ss:ID="s__percent"><NumberFormat ss:Format="Percent"/></Style>
+<Style ss:ID="s1_b_text"><Alignment ss:Indent="1"/><Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="8" ss:Color="#000000" ss:Bold="1"/></Style>
+<Style ss:ID="s_b_text"><Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="8" ss:Color="#000000" ss:Bold="1"/></Style>
+<Style ss:ID="s2__text"><Alignment ss:Indent="2"/></Style>
+<Style ss:ID="s_b_currency"><Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="8" ss:Color="#000000" ss:Bold="1"/><NumberFormat ss:Format="Currency"/></Style>
+<Style ss:ID="s_currency_nosymbol"><Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="8" ss:Color="#000000" /><NumberFormat ss:Format="#,##0.00_);[Red]\(#,##0.00\)"/></Style>
+<Style ss:ID="s1__text"><Alignment ss:Indent="1"/></Style>
+<Style ss:ID="s_b_currency_X"><Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="8" ss:Color="#000000" ss:Bold="1"/><Interior ss:Color="#f0e0e0" ss:Pattern="Solid"/><NumberFormat ss:Format="Currency"/></Style>
+<Style ss:ID="s__currency_en_US"><Alignment ss:Vertical="Center" ss:Horizontal="Right"/><NumberFormat ss:Format="&quot;$&quot;#,##0.00_);(&quot;$&quot;#,##0.00)"/></Style>
+<Style ss:ID="s__currency_fr_FR_EURO"><Alignment ss:Vertical="Center" ss:Horizontal="Right"/><NumberFormat ss:Format="&quot;€&quot;#,##0.00_);(&quot;€&quot;#,##0.00)"/></Style>
+<Style ss:ID="s__currency_en_GB"><Alignment ss:Vertical="Center" ss:Horizontal="Right"/><NumberFormat ss:Format="&quot;£&quot;#,##0.00_);(&quot;£&quot;#,##0.00)"/></Style>
+<Style ss:ID="s__currency_en_CA"><Alignment ss:Vertical="Center" ss:Horizontal="Right"/><NumberFormat ss:Format="&quot;Can$&quot;#,##0.00_);(&quot;Can$&quot;#,##0.00)"/></Style>
+<Style ss:ID="s__currency_sv_SE"><Alignment ss:Vertical="Center" ss:Horizontal="Right"/><NumberFormat ss:Format="&quot;SKr&quot;#,##0.00_);(&quot;SKr&quot;#,##0.00)"/></Style>
+<Style ss:ID="s__currency_de_CH"><Alignment ss:Vertical="Center" ss:Horizontal="Right"/><NumberFormat ss:Format="&quot;SwF&quot;#,##0.00_);(&quot;SwF&quot;#,##0.00)"/></Style>
+</Styles>
+<Worksheet ss:Name="CustomSegments">
+<Table><Row>
+<Cell ss:StyleID="header"><Data ss:Type="String">Inactive</Data></Cell>
+<Cell ss:StyleID="header"><Data ss:Type="String">Internal ID</Data></Cell>
+<Cell ss:StyleID="header"><Data ss:Type="String">Display Order</Data></Cell>
+<Cell ss:StyleID="header"><Data ss:Type="String">Label</Data></Cell>
+<Cell ss:StyleID="header"><Data ss:Type="String">Id</Data></Cell>
+<Cell ss:StyleID="header"><Data ss:Type="String">GL Impact</Data></Cell>
+<Cell ss:StyleID="header"><Data ss:Type="String">From Bundle</Data></Cell>
+</Row>
+<Row><Cell ss:StyleID="s__text"><Data ss:Type="String">No</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="Number">1</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="Number">1</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">Market Segment</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">cseg_anc_mrkt_sgmt</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">Yes</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">335992</Data></Cell>
+</Row>
+<Row><Cell ss:StyleID="s__text"><Data ss:Type="String">No</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="Number">2</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="Number">2</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">Destination</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">cseg_anc_dstnation</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">Yes</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String"></Data></Cell>
+</Row>
+<Row><Cell ss:StyleID="s__text"><Data ss:Type="String">No</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="Number">3</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="Number">3</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">Pay Group2</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">csegcseg_anc_paygr</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">Yes</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String"></Data></Cell>
+</Row>
+<Row><Cell ss:StyleID="s__text"><Data ss:Type="String">Yes</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="Number">4</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String"></Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">GRADE(TEST)</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">cseg1</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String">No</Data></Cell>
+<Cell ss:StyleID="s__text"><Data ss:Type="String"></Data></Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>

@@ -1,0 +1,55 @@
+/**
+ * @NApiVersion 2.x
+ * @NScriptType ScheduledScript
+ */
+define(['N/search', 'N/log'], function(search, log) {
+
+    function execute(context) {
+        var poLineSearch = search.create({
+            type: search.Type.PURCHASE_ORDER,
+            filters: [
+                ['mainline', 'is', 'F'],
+                'AND',
+                ['custcol_syncmspo_line', 'greaterthan', 0],
+                'AND',
+                ['custcol_syncmspo_line', 'lessthan', 10]
+            ],
+            columns: [
+                'tranid',                    // PO number
+                'line',
+                'item',
+                'custcol_syncmspo_line',    // SYNCMSPO Line #
+                'quantity',
+                'rate',
+                'amount',
+                'description'
+            ]
+        });
+
+        var i = 0;
+        poLineSearch.run().each(function(result) {
+            var poNum   = result.getValue('tranid');
+            var line    = result.getValue('line');
+            var item    = result.getText('item');
+            var syncNum = result.getValue('custcol_syncmspo_line');
+            var qty     = result.getValue('quantity');
+            var rate    = result.getValue('rate');
+            var amount  = result.getValue('amount');
+            var desc    = result.getValue('description');
+
+            log.audit('Matching Line Found',
+                `PO#: ${poNum} | Line: ${line} | SYNCMSPO Line #: ${syncNum} | ` +
+                `Item: ${item} | Qty: ${qty} | Rate: ${rate} | Amount: ${amount} | Desc: ${desc}`
+            );
+
+            i++;
+            return true;
+        });
+
+        log.audit('Search Complete', `Total matching lines: ${i}`);
+    }
+
+    return {
+        execute: execute
+    };
+});

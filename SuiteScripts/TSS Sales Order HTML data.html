@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Forecast Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="cashflowStyle">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script> -->
+
+  <style>
+    .default-button {
+      font-size: 2;
+      padding: 0px 0px;
+      width: 80px;
+      height: 25px;
+      float: right;
+    }
+
+    .buttons-excel {
+      margin-bottom: 10px
+    }
+
+    .pre-loader {
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background: url("https://tstdrv939178.app.netsuite.com/core/media/media.nl?id=260236&c=TSTDRV939178&h=SRlM-fu0EWGJsoeN9zonEIwndJzNciixclrWmNd6_k7hku4j") center no-repeat #fff;
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  </style>
+
+<body>
+  <form method="post" action="actionurl">
+    <div class="row gtr-uniform">
+      <div class="col-4 col-6-xsmall">
+        <p><b>Year</b></p>
+        <select name="years" id="years" required>
+          yearsFieldOptions
+        </select>
+      </div>
+      <div class="col-4 col-6-xsmall">
+        <p><b>Consignee</b></p>
+        <select name="consignee" id="consignee" required>
+        consigneeFieldOptions
+        </select>
+      </div>
+    </div>
+  </form>
+  <canvas id="myChart" width="700" height="350">
+  </canvas>
+  <script>
+    $(document).ready(function () {
+      try {
+        console.log("Sales Order Graph")
+        var gMon = 'graphMonths';
+        var gData = 'graphData';
+        gData = JSON.parse(gData);
+        console.log("gMon", JSON.stringify(gMon));
+        console.log("gData", gData);
+        var monLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: monLabels,
+            datasets: gData
+          }
+          ,
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Monthly Quantity by Top 5 Item Grades'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Quantity'
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: 'Month'
+                }
+              }
+            }
+          }
+        });
+      }
+      catch (e) {
+        console.log("error", e)
+      }
+    });
+  </script>
+</body>
+
+</html>

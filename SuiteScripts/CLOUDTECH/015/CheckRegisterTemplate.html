@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Cheque Register</title>
+
+  <style>
+    body {
+      width: 8.5in;
+      font-size: 10px;
+    }
+
+    table#tableToExcel {
+      border-collapse: collapse;
+    }
+
+    .border1 {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .border2 {
+      border-bottom: 2px solid black;
+    }
+
+    table#tableToExcel td {
+      padding: 0.0625cm;
+    }
+
+    .totalLine {
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .totalLine p {
+      padding-bottom: 11px;
+    }
+
+    .grandTotalLine {
+      font-size: 11px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <table width="100%">
+    <tr>
+      <td width="50%" align="left" valign="top" colspan="3">
+        <p align="left">
+          <b>Payment Type: </b>{paymenttype} <br />
+          <b>Batch Id: </b>
+        </p>
+      </td>
+      <td width="50%" align="center" valign="top" colspan="2">
+        <p align="center" style='font-size: 12pt;'>
+          <b>{subsidiary}</b> <br />
+          <b>Cheque Register</b>
+        </p>
+      </td>
+      <td width="50%" align="right" valign="top">
+        <p align="right">
+          <table>
+            <tr>
+              <td align="right" width="50%">
+                <p align="right"><b>Pay Date</b></p>
+              </td>
+              <td align="right">
+                <p align="right">
+                  {invoicedate}</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="right">
+                <p align="right"><b>Bank Account</b></p>
+              </td>
+              <td align="right">
+                <p align="right">
+                  {bankAccount}</p>
+              </td>
+            </tr>
+          </table>
+        </p>
+      </td>
+    </tr>
+  </table>
+
+  <table id="tableToExcel" width="100%" border='1'>
+    <thead>
+      <tr>
+        <td align="left"><b style='font-size: 11px;'>
+            <p text-align="left">Vendor</p>
+          </b></td>
+        <td align="left"><b style='font-size: 11px;'>
+            <p text-align="left">Invoice Number</p>
+          </b></td>
+        <td align="left"><b style='font-size: 11px;'>
+            <p text-align="left">Cheque Number</p>
+          </b></td>
+        <td align="center"><b style='font-size: 11px;'>
+            <p text-align="center">Cheque Date</p>
+          </b></td>
+        <td align="right"><b style='font-size: 11px;'>
+            <p text-align="right">Amount
+            </p>
+          </b></td>
+      </tr>
+    </thead>
+    <tbody>
+      {custbody_tbody}
+    </tbody>
+  </table>
+</body>
+{custbody_scriptrow}
+
+</html>

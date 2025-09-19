@@ -1,0 +1,281 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+	<head>
+		<style type="text/css">
+
+table {
+	padding: 0;
+}
+
+.title {
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 13pt;
+}
+
+.subtitle {
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+	font-size: 10pt;
+}
+
+body {
+	font-family: Helvetica, sans-serif;
+	font-size: 8pt;
+}
+
+.headertable_part2 {
+	width: 100%;
+}
+
+.headertable_item {
+	width: 100%;
+	border-bottom : 1;
+}
+
+.headertable_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+.headertable_item p, .headertable_part1_label, .headertable_part2_label{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+.headertable_part1_label, .headertable_part2_label{
+	white-space: nowrap;
+}
+
+.contents_item {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.contents_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+.contents_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+td .stockinglocation{
+	width : 28% !important;
+	align : left;
+}
+
+td .stocknumber{
+	width : 28% !important;
+	align : left;
+}
+
+td .description{
+	width : 16% !important;
+	align : left;
+}
+
+td .unitofmeasure{
+	width : 9% !important;
+	align : right;
+}
+
+td .unitofmeasure_content{
+	width : 9% !important;
+	align : right;
+	vertical-align:bottom;
+}
+
+td .itemcount{
+	width : 9% !important;
+	align : right;
+}
+
+td .itemcount_content{
+	width : 9% !important;
+	align : right;
+	border-bottom : 1;
+	margin-right : 5px;
+	vertical-align:bottom;
+}
+
+td .comments{
+	width : 10% !important;
+	align : left;
+}
+
+td .comments_content{
+	width : 10% !important;
+	align : left;
+	border-bottom : 1;
+}
+
+</style>	
+	<macrolist>
+    
+    	<macro id="nlheader">
+			
+			<p align="center" class="title">
+				Material Reconciliation Count Book
+			</p>
+			
+			<table width="100%">
+	          	<tr>
+	          		<td width="8%" align="left">
+		            	<pagenumber /> of
+		              	<totalpages />
+		            </td>
+		            <td class="headertable_part1_label"  width="12%" align="left">
+		            Book ID: <custxmlbookref class="replaceKey"></custxmlbookref>
+					</td>
+					<td class="headertable_part1_label"  width="13.33%" align="left">
+						<p align="left">
+							{COUNTSHEETBOOKREF}
+						</p>
+					</td>
+					
+					<td class="headertable_part1_label"  width="33.33%" align="center">
+							<p align="center" class="subtitle">
+								COUNT BOOK
+							</p>
+					</td>
+					
+					<td width="33.33%" align="right">
+		            	Date: <custxmlprintdate class="replaceKey"></custxmlprintdate>
+					</td>
+				</tr>
+        	</table>
+        	
+			<table class="headertable_part2 headertable_item" width="100%" align="center">
+			<tr><td>
+			<table width = "100%">
+			
+								<!--
+								1.0.1 - for some reason the width in the class doesnt work this way so just define inline width
+								1.0.2 - it does though if it is inside a table container, use parent container so it is the same as the content from suitelet-->
+								<tr>
+									<td class="stockinglocation">
+										<p>Stocking </p>
+										<p>Location </p>
+										
+									</td>
+									
+									<td class="stocknumber">
+										<p>Stock </p>
+										<p>No </p>
+									</td>
+									
+									<td class="description">
+										<p>Part No </p>
+										<p>Description </p>
+									</td>
+									
+									<td align="right" class="unitofmeasure">
+									
+										<p>Unit of </p>
+										<p>Measure </p>
+										
+									</td>
+									
+									<td align="right" class="itemcount">
+										
+										<p>Item </p>
+										<p>Count </p>
+									</td>
+									
+									<td align="center" class="comments">
+										<p> Comments </p>
+										<p> </p>
+									</td>
+								</tr> 
+								
+								
+								</table>
+								</td>
+								</tr>
+			
+								
+								<!--
+								1.0.1 - for some reason the width in the class doesnt work this way so just define inline width
+								1.0.2 - it does though if it is inside a table container, use parent container so it is the same as the content from suitelet
+								<tr>
+									<td width="28%" class="stockinglocation">
+										<p>Stocking </p>
+										<p>Location </p>
+										
+									</td>
+									
+									<td width="28%" class="stocknumber">
+										<p>Stock </p>
+										<p>No </p>
+									</td>
+									
+									<td width="16%" class="description">
+										<p>Part No </p>
+										<p>Description </p>
+									</td>
+									
+									<td align="right" width="9%" class="unitofmeasure">
+									
+										<p>Unit of </p>
+										<p>Measure </p>
+										
+									</td>
+									
+									<td align="right"  width="9%" class="itemcount">
+										
+										<p>Item </p>
+										<p>Count </p>
+									</td>
+									
+									<td align="center"  width="10%" class="comments">
+										<p> Comments </p>
+										<p> </p>
+									</td>
+								</tr>
+								-->
+			</table>
+			
+		</macro>
+	</macrolist>
+	</head>
+
+	<body size="Letter-LANDSCAPE" header="nlheader" header-height="1in">
+	<!--<body header="nlheader" header-height="10%" footer="nlfooter" footer-height="10pt"
+            padding="0.5in 0.5in 0.5in 0.5in">-->
+	 
+	 {TABLE_ITEM}
+
+	</body>
+</pdf>

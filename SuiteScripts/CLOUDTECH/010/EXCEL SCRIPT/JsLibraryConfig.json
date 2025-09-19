@@ -1,0 +1,8 @@
+{
+  "baseUrl": "./",
+  "paths": {
+    "jszip": "/SuiteScripts/CLOUDTECH/010/EXCEL SCRIPT/jszip",
+    "xlsx": "/SuiteScripts/CLOUDTECH/010/EXCEL SCRIPT/xlsx.full.min.js",
+    "sheetjs": "SuiteScripts/CLOUDTECH/010/EXCEL SCRIPT/xlsx.full.min.js"
+  }
+}

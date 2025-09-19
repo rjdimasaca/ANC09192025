@@ -1,0 +1,318 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+	<head>
+		<style type="text/css">
+
+table {
+	padding: 0;
+}
+
+.title {
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 13pt;
+}
+
+.subtitle {
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+	font-size: 10pt;
+}
+
+.subtitle1 {
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-size: 8pt;
+}
+
+.subtitle2 {
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-size: 8pt;
+}
+
+body {
+	font-family: Helvetica, sans-serif;
+	font-size: 8pt;
+}
+
+.headertable_part2 {
+	width: 100%;
+}
+
+.headertable_item {
+	width: 100%;
+	border-bottom : 1;
+}
+
+.headertable_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+.headertable_item p, .headertable_part1_label, .headertable_part2_label{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+.headertable_part1_label, .headertable_part2_label{
+	white-space: nowrap;
+}
+
+.contents_item {
+	width: 100%;
+	table-layout: fixed; /*this must be the culprit why it cant follow class widths*/
+}
+
+.contents_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+.contents_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+
+
+
+
+
+td .stockinglocation{
+	width : 18% !important;
+	align : left;
+}
+
+td .stocknumber{
+	width : 18% !important;
+	align : left;
+}
+
+td .description{
+	width : 24% !important;
+	align : left;
+}
+
+
+td .onhandquantity{
+	width : 10% !important;
+	align : right;
+}
+
+td .itemcount{
+	width : 10% !important;
+	align : right;
+}
+
+td .countvariance{
+	width : 10% !important;
+	align : right;
+}
+
+td .costvariance{
+	width : 10% !important;
+	align : right;
+}
+
+</style>	
+	<macrolist>
+    
+    	<macro id="nlheader">
+			
+			<p align="center" class="title">
+				Material Reconciliation Variance Report
+			</p>
+			
+			<table width="100%">
+	          	<tr>
+	          		<td width="8%" align="left">
+		            	<pagenumber /> of
+		              	<totalpages />
+		            </td>
+		            <td class="headertable_part1_label"  width="12%" align="left">
+		            
+					</td>
+					<td class="headertable_part1_label"  width="13.33%" align="left">
+						<p align="left">
+							
+						</p>
+					</td>
+					
+					<td class="headertable_part1_label"  width="33.33%" align="center">
+							<p align="center" class="subtitle">
+								Book ID: <custxmlbookref class="replaceKey"></custxmlbookref>
+							</p>
+					</td>
+					
+					<td width="33.33%" align="right">
+		            	Date: <custxmlprintdate class="replaceKey"></custxmlprintdate>
+					</td>
+				</tr>
+        	</table>
+        	
+			<table class="headertable_part2 headertable_item" width="100%" align="center">
+			<tr><td>
+			<table width = "100%">
+			
+								<!--
+								1.0.1 - for some reason the width in the class doesnt work this way so just define inline width
+								1.0.2 - it does though if it is inside a table container, use parent container so it is the same as the content from suitelet-->
+								<tr>
+									<td class="stockinglocation">
+										<p>Stocking </p>
+										<p>Location </p>
+										
+									</td>
+									
+									<td class="stocknumber">
+										<p>Stock </p>
+										<p>No </p>
+									</td>
+									
+									<td class="description">
+										<p>Part No </p>
+										<p>Description </p>
+									</td>
+									
+									<td align="right" class="onhandquantity">
+									
+										<p>On Hand </p>
+										<p>Quantity </p>
+										
+									</td>
+									
+									<td align="right" class="itemcount">
+										
+										<p>Item </p>
+										<p>Count </p>
+									</td>
+									
+									<td align="right" class="countvariance">
+										<p> Count </p>
+										<p> Variance </p>
+									</td>
+									
+									<td align="right" class="costvariance">
+										<p> Cost* </p>
+										<p> Variance </p>
+									</td>
+								</tr> 
+								
+								
+								</table>
+								</td>
+								</tr>
+			
+								
+								<!--
+								1.0.1 - for some reason the width in the class doesnt work this way so just define inline width
+								1.0.2 - it does though if it is inside a table container, use parent container so it is the same as the content from suitelet
+								<tr>
+									<td width="28%" class="stockinglocation">
+										<p>Stocking </p>
+										<p>Location </p>
+										
+									</td>
+									
+									<td width="28%" class="stocknumber">
+										<p>Stock </p>
+										<p>No </p>
+									</td>
+									
+									<td width="16%" class="description">
+										<p>Part No </p>
+										<p>Description </p>
+									</td>
+									
+									<td align="right" width="9%" class="unitofmeasure">
+									
+										<p>Unit of </p>
+										<p>Measure </p>
+										
+									</td>
+									
+									<td align="right"  width="9%" class="itemcount">
+										
+										<p>Item </p>
+										<p>Count </p>
+									</td>
+									
+									<td align="center"  width="10%" class="comments">
+										<p> Comments </p>
+										<p> </p>
+									</td>
+								</tr>
+								-->
+			</table>
+			
+		</macro>
+	</macrolist>
+	</head>
+
+	<body size="Letter" header="nlheader" header-height=".75in">
+	<!--<body header="nlheader" header-height="10%" footer="nlfooter" footer-height="10pt"
+            padding="0.5in 0.5in 0.5in 0.5in">-->
+	 
+	 {TABLE_ITEM}
+	
+	<!--
+	do this inside the script
+	<table border="1" width="50%" align="center">
+	<tr>
+	<td width="75%" align="left">
+	 Total number of items listed (out-of-balance):
+	</td>
+	<td width="25%" align="right">
+	
+	</td>
+	</tr>
+	
+	<tr>
+	<td width="75%" align="left">
+	 Total cost variance:
+	</td>
+	<td width="25%" align="right">
+	</td>
+	</tr>
+	</table>-->
+	
+	</body>
+</pdf>

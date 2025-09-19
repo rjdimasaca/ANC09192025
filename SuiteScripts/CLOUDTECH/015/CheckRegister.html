@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Cheque Register</title>
+
+  <style>
+    body {
+      width: 8.5in;
+      font-size: 10px;
+    }
+
+    table#tableToExcel {
+      border-collapse: collapse;
+    }
+
+    .border1 {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .border2 {
+      border-bottom: 2px solid black;
+    }
+
+    table#tableToExcel td {
+      padding: 0.0625cm;
+    }
+
+    .totalLine {
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .totalLine p {
+      padding-bottom: 11px;
+    }
+
+    .grandTotalLine {
+      font-size: 11px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <table width="100%">
+    <tr>
+      <td width="50%" align="left" valign="top" colspan="3">
+        <p align="left">
+          <b>Payment Type: </b>Check <br />
+          <b>Batch Id: </b>
+        </p>
+      </td>
+      <td width="50%" align="center" valign="top" colspan="2">
+        <p align="center" style='font-size: 12pt;'>
+          <b>Alberta Newsprint Company</b> <br />
+          <b>Cheque Register</b>
+        </p>
+      </td>
+      <td width="50%" align="right" valign="top">
+        <p align="right">
+          <table>
+            <tr>
+              <td align="right" width="50%">
+                <p align="right"><b>Pay Date</b></p>
+              </td>
+              <td align="right">
+                <p align="right">
+                  6/29/2020 - 6/29/2020</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="right">
+                <p align="right"><b>Bank Account</b></p>
+              </td>
+              <td align="right">
+                <p align="right">
+                  1101 1101 US Bank   - RBC Oper - ANC JV</p>
+              </td>
+            </tr>
+          </table>
+        </p>
+      </td>
+    </tr>
+  </table>
+
+  <table id="tableToExcel" width="100%" border='1'>
+    <thead>
+      <tr>
+        <td align="left"><b style='font-size: 11px;'>
+            <p text-align="left">Vendor</p>
+          </b></td>
+        <td align="left"><b style='font-size: 11px;'>
+            <p text-align="left">Invoice Number</p>
+          </b></td>
+        <td align="left"><b style='font-size: 11px;'>
+            <p text-align="left">Cheque Number</p>
+          </b></td>
+        <td align="center"><b style='font-size: 11px;'>
+            <p text-align="center">Cheque Date</p>
+          </b></td>
+        <td align="right"><b style='font-size: 11px;'>
+            <p text-align="right">Amount
+            </p>
+          </b></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>  <td width="30%">Air-O-Flex Equipment</td>  <td width="16%">20-340-01</td>  <td width="16%">97904</td>  <td width="16%" align="center">6/29/2020</td>  <td width="16%" align="right">61,546.77</td></tr><tr style="border-top: none; border-bottom: 0px solid #fff; height: 1px">  <td style="background-color: #fefefe;" colspan="5"></td></tr><tr>  <td colspan="4" class="totalLine" align="left"><p>AIR-O-FLEX EQUIPMENT TOTAL</p></td>  <td width="16%" class="totalLine" align="right"><p>61,546.77</p></td></tr><tr>  <td colspan="4" class="grandTotalLine" align="left"><p>GRAND TOTAL</p></td>  <td width="16%" class="grandTotalLine" align="right"><p>61,546.77</p></td></tr>
+    </tbody>
+  </table>
+</body>
+{custbody_scriptrow}
+
+</html>

@@ -1,0 +1,454 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+	<head>
+	
+		<link name="micre13b" type="font" subtype="opentype"
+      	src="https://1116623.app.netsuite.com/c.1116623/suitebundle43003/lib/Font/micre13b.ttf" bytes="2" />
+	
+		<style type="text/css">
+.check table, .voucher1 table, .voucher2 table {
+	position: relative;
+	overflow: hidden;
+	font-size: 9pt;
+	font-family: Helvetica, sans-serif;
+	padding: 0;
+}
+
+table.itemtable, table.check {
+	position: relative;
+	font-size: 9pt;
+	font-family: Helvetica, sans-serif;
+	padding: 0;
+}
+
+table.currency {
+	position: relative;
+	font-size: 8pt;
+	font-family: Helvetica, sans-serif;
+	padding: 0;
+}
+
+table.itemtable {
+	table-layout: fixed;
+}
+
+.lineContents {
+	align: center, width: 25%, text-align: justify,
+}
+
+table {
+	padding: 0;
+}
+
+body {
+	font-family: Helvetica, sans-serif;
+	font-size: 8pt;
+}
+
+.title {
+	font-size: 13pt;
+	padding: 0;
+}
+
+.headertable_part1 {
+	position: absolute;
+	top: .6in;
+	width: 40%;
+}
+
+.barcodetable {
+	position: absolute; /*NOT CONFIDENT ROWSPAN WORKS WELL IN BFO, OR IF IT WORKS AT ALL so just use absolute positioning*/
+	top: .6in;
+	width: 20%;
+}
+
+.headertable_part2 {
+	position: absolute; 
+	top: 1.85in;
+	width: 100%;
+}
+
+.headertable_item {
+	width: 100%;
+	table-layout: fixed;
+	border : 1;
+}
+
+.headertable_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+.headertable_item p, .headertable_part1_label, .headertable_part2_label{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+.headertable_part1_label, .headertable_part2_label{
+	white-space: nowrap;
+	overflow:hidden;
+}
+
+.title {
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+
+
+.contents_item {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.contents_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+.contents_item p{
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	padding-top: 0;
+	padding-bottom: 0;
+	padding: 0;
+}
+
+
+td .polinenumber{
+	width : 7%;
+	align : left;
+}
+
+td .stocknumber{
+	width : 21%;
+	align : left;
+}
+
+td .description{
+	width : 24%;
+	align : left;
+}
+
+td .stocklocation{
+	width : 13%;
+	align : left;
+}
+
+
+td .receivedqty{
+	width : 8%;
+	align : right;
+}
+
+td .uom{
+	width : 4%;
+	align : left;
+}
+
+td .itemcost{
+	width : 8%;
+	align : right;
+}
+
+td .workorder{
+	width : 8%;
+	align : right;
+}
+
+td .requestor{
+	width : 15%;
+	align : right;
+}
+
+
+</style>	
+	<macrolist>
+    
+    	<macro id="nlheader">
+			
+			<p align="center" class="title">
+				Goods Receipt Slip
+			</p>
+			
+			<table 	width="100%">
+	          	<tr>
+		            <td align="left">
+		            	<pagenumber /> of
+		              	<totalpages />
+		            </td>
+		            <td align="right">
+		            Date: <custxmlprintdate class="replaceKey"></custxmlprintdate>
+					</td>
+				</tr>
+        	</table>
+        	
+        	<hr width="100%">
+        	</hr>
+        	
+			<table class="barcodetable" width="100%" align="center">
+				<tr>
+					<td align="center">
+							{GOODSRECEIPTSLIPBARCODE}
+					</td>
+				</tr>
+			</table>
+			
+        	
+			<table  class="headertable_part1" left="0">
+				<tr>
+					<td width="25%">
+					 <p class="headertable_part1_label"> PO Number: </p>
+					</td>
+					
+					<td width="75%">
+						<ponumber class="replaceKey"></ponumber>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="25%">
+					<p class="headertable_part1_label"> Supplier: </p>
+					</td>
+					
+					<td width="75%">
+						<supplier class="replaceKey"></supplier>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="25%">
+					
+					</td>
+					
+					<td width="75%">
+						<supplieraddress class="replaceKey"></supplieraddress>
+					<!-- {SUPPLIERADDRESS alskda jsdlka jsdklja lsdjlaksjdkajsdl\n /n \n /n k jasldjask jdlkas jdlaskjd lasjdkl ajlsd jalksjd lasjdl ajslkadjslkdj alksdj ajsd lajskd ljasklk djaskljd lasjd las /n 125634758 2534578 1253647 21563748 1263748}  -->
+					</td>
+				</tr>
+				 
+			</table>
+			
+			<table class="headertable_part1" left="66%">
+				<tr>
+					<td width="25%">
+					<p class="headertable_part1_label"> Receipt Date: </p>
+					</td>
+					
+					<td width="75%">
+						<receiptdate class="replaceKey"></receiptdate>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="25%">
+					<p class="headertable_part1_label"> Status: </p>
+					</td>
+					
+					<td width="75%">
+						<status class="replaceKey"></status>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="25%">
+					<p class="headertable_part1_label"> PO Type: </p>
+					</td>
+					
+					<td width="75%">
+						<potype class="replaceKey"></potype>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="25%">
+					<p class="headertable_part1_label"> PO Date: </p>
+					</td>
+					
+					<td width="75%">
+						<podate class="replaceKey"></podate>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="27.5%">
+					<p class="headertable_part1_label"> Required Date: </p>
+					</td>
+					
+					<td width="72.25%">
+						<requireddate class="replaceKey"></requireddate>
+					</td>
+				</tr>
+				
+				<!-- audrey asked to get rid of this, it is po level data 
+				<tr>
+					<td width="27.5%">
+					<p class="headertable_part1_label"> Promised Date: </p>
+					</td>
+					
+					<td width="72.25%">
+						<promiseddate class="replaceKey"></promiseddate>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="35%">
+					<p class="headertable_part1_label"> Follow-up Date: </p>
+					</td>
+					
+					<td width="65%">
+						<followupdate class="replaceKey"></followupdate>
+					</td>
+				</tr>
+				
+				-->
+				
+			</table>
+			
+			<table class="headertable_part2" width="100%" align="center">
+				<tr>
+						<td align="left" width="12%">
+							<p class="headertable_part2_label"> Contact:  </p>
+						</td>
+						<td align="left" width="39%">
+							<contact class="replaceKey"></contact>
+						</td>
+						
+						<td align="left" width="7%">
+							<p class="headertable_part2_label"> Buyer:   </p>
+						</td>
+						<td align="left" width="43%">
+							<buyervalue class="replaceKey"></buyervalue>
+						</td>
+					</tr>
+					
+					<tr>
+						<td align="left" width="12%">
+							<p class="headertable_part2_label"> FOB:   </p>
+						</td>
+						<td align="left" width="39%">
+							<!-- <p white-space="nowrap" style="margin-left:-50px; white-space: nowrap; overflow:hidden;" class="headertable_part2_label">
+							
+							</p> -->
+							<p white-space="nowrap" style="white-space: nowrap; overflow:hidden;">
+							<fobvalue class="replaceKey"></fobvalue>
+							</p>
+							
+						</td>
+						
+						<td align="left" width="7%">
+							<p class="headertable_part2_label"> Ship via:    </p>
+						</td>
+						<td align="left" width="43%">
+							<shipvia class="replaceKey"></shipvia>
+						</td>
+					</tr>
+					
+					<tr>
+						<td align="left" width="12%">
+							<p class="headertable_part2_label"> Explanation:     </p>
+						</td>
+						<td white-space="nowrap" style="white-space: nowrap; overflow:hidden;" class="headertable_part2_label" align="left" colspan="3">
+						<p><explanationvalue class="replaceKey"></explanationvalue></p>
+						</td>
+					</tr>
+					
+					<tr>
+						<td align="left" width="12.5%">
+							<p class="headertable_part2_label"> Packing Slip No:      </p>
+						</td>
+						<td align="left" colspan="3">
+							<packingslipvalue class="replaceKey"></packingslipvalue>
+						</td>
+					</tr>
+					
+					<tr>
+						<td align="left" colspan="4">
+							<table class="headertable_item">
+								<tr>
+									<td class="polinenumber">
+										<p>PO </p>
+										<p>Line no </p>
+										
+									</td>
+									
+									<td class="stocknumber">
+										<p>Stock </p>
+										<p>Number </p>
+									</td>
+									
+									<td class="description">
+										<p> </p>
+										<p>Description </p>
+									</td>
+									
+									<td class="stocklocation">
+									
+										<p>Stock </p>
+										<p>Location </p>
+										
+									</td>
+									
+									<td  class="receivedqty">
+										
+										<p>Received </p>
+										<p>Qty </p>
+									</td>
+									
+									<td class="uom">
+										<p> </p>
+										<p>UOM </p>
+									</td>
+									
+									<td class="itemcost">
+										<p>Item </p>
+										<p>Cost </p>
+									</td>
+									
+									<td class="workorder">
+										<p>Work</p>
+										<p>Order </p>
+									</td>
+									
+									<td class="requestor">
+										<p>Requestor </p>
+										<p> </p>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+			</table>
+			
+		</macro>
+	</macrolist>
+	</head>
+
+	<body margin-top="-5" header="nlheader" header-height="3in">
+	<!--<body header="nlheader" header-height="10%" footer="nlfooter" footer-height="10pt"
+            padding="0.5in 0.5in 0.5in 0.5in">-->
+	 
+	 {TABLE_ITEM}
+
+	</body>
+</pdf>

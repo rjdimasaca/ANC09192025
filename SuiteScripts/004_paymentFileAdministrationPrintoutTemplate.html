@@ -1,0 +1,109 @@
+<pdf>
+    <head>
+        <title>
+            Payment Register File
+        </title>
+        <macrolist>
+            <macro id="header">
+                <table width="100%">
+                    <tr>
+                        <td width="30%" align="left" valign="top">
+                            <p align="left">
+                                <b>Payment Type: </b>{{custrecord_2663_payment_type}} <br/>
+                                <b>Batch Id: </b>{{name}}
+                            </p>
+                        </td>
+                        <td width="15cm" align="center" valign="top">
+                            <p align="center">
+                                <b>{{custrecord_2663_payment_subsidiary.namenohierarchy}}</b> <br/>
+                                <b>{{report_title}}</b><br/>
+                                Page <pagenumber/> of <totalpages/>
+                            </p>
+                        </td>
+                        <td width="30%" align="right">
+                            <table>
+                                <tr>
+                                    <td align="right"
+                                        width="50%"><p align="right"><b>Pay Date</b></p></td>
+                                    <td align="right"><p align="right">
+                                        {{custrecord_2663_process_date}}</p></td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><p align="right"><b>Currency</b></p></td>
+                                    <td align="right"><p align="right">
+                                        {{custrecord_2663_bank_account.custrecord_2663_currency}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><p align="right"><b>Bank Account</b></p></td>
+                                    <td align="right"><p align="right">
+                                        {{custrecord_2663_bank_account}}</p></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </macro>
+        </macrolist>
+        <style>
+            * {
+                font-size: 9pt;
+            }
+            body {
+                padding: 0.5cm;
+                font-size: 12pt;
+                font-family: "Arial", "Tahoma", sans-serif;
+            }
+            table thead tr th p{
+                font-size: 10pt;
+                padding-left: 0.25cm;
+                padding-right: 0.25cm;
+                font-weight: bold;
+            }
+            .row-totals p {
+                font-weight: bold;
+            }
+            .row-totals td {
+                margin-top: 0.25cm;
+                padding: 0.125cm 0.25cm;
+                background-color: #F9F9F9;
+            }
+            .row-grandtotals td {
+                border-top: 1px solid black;
+                margin-top: 0.25cm;
+                padding: 0.25cm;
+            }
+            .row-details td {
+                padding-left: 0.25cm    ;
+                padding-right: 0.25cm;
+            }
+            .left {
+                align: left;
+            }
+            .right {
+                align: right;
+            }
+        </style>
+    </head>
+    <body header="header" size="letter-landscape" header-height="2.6cm">
+
+    <table width="100%">
+        <thead>
+        <tr>
+            <th width="8%" class="left"><p class="left">Supplier</p></th>
+            <th class="left"><p class="left">Supplier Name</p></th>
+            <th width="15%" class="left"><p class="left">Invoice Number</p></th>
+            <th width="12%" class="left"><p class="left">Bill Payment</p></th>
+            <th width="12%" class="left"><p class="left">Voucher Number</p></th>
+            <th width="12%" class="right"><p class="right">Invoice Amount</p></th>
+            <th width="12%" class="right"><p class="right">Discount Amount</p></th>
+            <th width="12%" class="right"><p class="right">Payment Amount</p></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{tablebody}}
+        </tbody>
+    </table>
+
+    </body>
+</pdf>
